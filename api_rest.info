@@ -1,0 +1,85 @@
+Home Controller:
+GET     /               -- Retrieves the home page
+GET     /dashboard      -- Retrieves the dashboard page
+GET     /login          -- Retrieves the login page
+GET     /logout         -- Retrieves the logout page
+GET     /register       -- Retrieves the login page
+
+User structure:
+{   
+    _id: 12345678,
+    givenName: "Name",
+    surname: "Last name",
+    username: "myusername",
+    email:  "me@example.com",
+    password: "123456",
+    company_id: 123456789,
+    accounts: [facebook, twitter, linkedin],
+    role_id: 43252
+}
+
+Account structure:
+{
+    _id: 15389,
+    name: "Facebook",
+    user_data: {}
+}
+
+Role structure: 
+{
+    _id: 213124,
+    name: "Administrator"
+}
+// ------------------------------------------------
+Company controller:
+
+GET     /companies       -- Retrieves a list of companies
+GET     /companies/:id   -- Retrieves a specific company   
+GET     /companies/add   -- Retrieves the page for a new company
+POST    /companies/add   -- Add new company
+PUT     /companies/:id   -- Updates in a specific company
+DELETE  /companies/:id   -- Deletes a specific company
+
+Company structure:
+{
+    id: "123456789",
+    name: "Company's name",
+    created: new Date(2014, 01, 01),
+    deleted: new Date(2015, 02, 20),
+    country: "Argentina",
+    state: "Buenos Aires"
+    jobs: ["1234560898", "351564654", "351564652"],
+    accept_newsletter: true
+}
+
+// ------------------------------------------------
+Job controller:
+
+GET     /jobs       -- Retrieves a list of jobs
+GET     /jobs/:id   -- Retrieves a specific job   
+GET     /jobs/add   -- Retrieves the page for a new job
+POST    /jobs/add   -- Add new jobs
+PUT     /jobs/:id   -- Updates in a specific job
+DELETE  /jobs/:id   -- Deletes a specific job
+
+Job structure:
+{
+    id: 1234156789,
+    company_id: 123456
+    published_at: new Date(2014, 01, 01),
+    valid_until: new Date(2014, 01, 07),
+    title: "A job search",
+    description: "We are hiring!",
+    link: "http://www.company.com/hiring/bla",
+    status: "1"
+}
+
+Status structure:
+{
+    status: [
+        {pending, 1},
+        {paid, 0},
+        {canceled, 2},     
+    ]
+}
+// ------------------------------------------------
