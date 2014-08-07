@@ -4,35 +4,31 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var MessageModel = require('../models/message');
 
-//GET:  /messages/
-//Retrieves a list of messages
-router.get('/', function(req, res) {
-    return MessageModel.find({deleted: false}, function(err, messages){
+router.get('/:company_id/', function(req, res) {
+    return MessageModel.find({company: req.params.company_id, deleted: false}, function(err, messages){
         if (!err){
             res.jsonp(messages)
         } else{
-            console.log(err);
+            res.send(err);            
+            console.error(err);
         }    
     });
 });
 
-//GET:  /messages/:id
-//Retrieves a specific message
-router.get('/:id', function(req, res) {
-    return MessageModel.findById(req.params.id, function(err, message){
+router.get('/:company_id/:id', function(req, res) {
+    return MessageModel.findOne({company: req.params.company_id, _id:req.params.id, deleted: false}, function(err, message){
         if (!err){
             res.jsonp(message)
         } else{
-            console.log(err);
+            res.send(err);
+            console.error(err);
         }    
     });
 });
 
-//POST:    /messages/add
-//Add a new message
-router.post('/add', function(req, res) {
+router.post('/:company_id/new', function(req, res) {
     var message = new MessageModel({
-        deleted_at: null,
+        company: req.params.company_id,
         title: req.body.title,
         body: req.body.body,
         link: req.body.link
@@ -41,17 +37,17 @@ router.post('/add', function(req, res) {
         if(!err){
             res.send(message);                
         }else{
-            console.log(err);
+            res.send(err);
+            console.error(err);
         }    
     });
 
 });
 
-//PUT:    /messages/:id
-//Update a specific message
-router.put('/:id', function(req, res) {
-    return MessageModel.findById(req.params.id, function(err, message){
+router.put('/:company_id/:id', function(req, res) {
+    return MessageModel.findOne({company: req.params.company_id, _id:req.params.id, deleted: false}, function(err, message){
         if(!err){
+
             message.title = req.body.title;
             message.body  = req.body.body;
             message.link  = req.body.link;
@@ -60,17 +56,16 @@ router.put('/:id', function(req, res) {
                 if(!errSave){
                     res.send(message);                
                 }else {
-                    console.log(err);            
+                    res.send(errSave);
+                    console.error(err);            
                 }
             });
         }
     });
 });
 
-//DELETE:    /messages/
-//Add new jobs
-router.delete('/:id', function(req, res) {
-  return MessageModel.findById(req.params.id, function(err, message){
+router.delete('/:company_id/:id', function(req, res) {
+    return MessageModel.findOne({company: req.params.company_id, _id: req.params.id, deleted: false}, function(err, message){
         if (!err){
             message.deleted_at  = Date.now;
             message.deleted  = true;
@@ -79,11 +74,12 @@ router.delete('/:id', function(req, res) {
                 if (!errSave){
                     res.send('');                
                 }else {
-                    console.log(err);            
+                    console.write(err);            
+                    res.send(errSave);
                 }
             });
         }else{
-            res.send('error');
+            res.send(err);
         }
     });
 });

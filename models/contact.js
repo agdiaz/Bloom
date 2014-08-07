@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var tagModel = require('tag');
+var TagModel = require('tag');
 
 var contactSchema = new Schema({
     author: {type: Schema.Types.ObjectId, required: true},
@@ -12,7 +12,7 @@ var contactSchema = new Schema({
     first_name: {type: String, required: true, trim: true},
     last_name:  {type: String, required: true, trim: true},
     mail: {type: String, required: true, lowercase: true, trim:true},
-    tags: [TagModel]
+    tags: {type: [TagModel], default: []}
 }, { 
     collection: 'contacts' 
 });
