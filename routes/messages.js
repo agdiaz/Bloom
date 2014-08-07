@@ -3,7 +3,6 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 var MessageModel = require('../models/message');
-//var MessageModel = message.MessageModel;
 
 //GET:  /messages/
 //Retrieves a list of messages
@@ -42,7 +41,7 @@ router.post('/add', function(req, res) {
         if(!err){
             res.send(message);                
         }else{
-            consolo.log(err);
+            console.log(err);
         }    
     });
 
@@ -72,12 +71,12 @@ router.put('/:id', function(req, res) {
 //Add new jobs
 router.delete('/:id', function(req, res) {
   return MessageModel.findById(req.params.id, function(err, message){
-        if(!err){
+        if (!err){
             message.deleted_at  = Date.now;
             message.deleted  = true;
 
             message.save(function(errSave){
-                if(!errSave){
+                if (!errSave){
                     res.send('');                
                 }else {
                     console.log(err);            
