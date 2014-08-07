@@ -2,12 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var companySchema = new Schema({
-    name: String,    
+    name: {type: String, required: true},
     created_at: {type: Date, default: Date.now},
-    deleted_at: Date,
+    deleted_at: {type: Date, default: null},
     deleted: {type: Boolean, default: false}
+}, {
+    collection: 'companies'
 });
 
-var Company = mongoose.model('company', companySchema);
-
-module.exports = Company;
+module.exports = mongoose.model('CompanyModel', companySchema);
