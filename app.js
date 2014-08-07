@@ -3,18 +3,18 @@ var dbConnectionString = "mongodb://localhost:8100/bloom";
 console.log('Connecting to: ' + dbConnectionString);
 
 var express = require('express');
+var expressSession = require('express-session');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-// The mongodb driver:
 var mongoose = require('mongoose');
 mongoose.connect(dbConnectionString);
+var passport = require('passport');
 
 // Controllers
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var messages = require('./routes/messages');
 var companies = require('./routes/companies');
 var tags = require('./routes/tags');
@@ -30,11 +30,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(expressSession({secret: 'holala'}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
+var LocalStrategy = require('passport-local').Strategy;
+var UserModel = require('./models/user');
+passport.use(new LocalStrategy(UserModel.authenticate()));
+passport.serializeUser(UserModel.serializeUser());
+passport.deserializeUser(UserModel.deserializeUser());
+
 
 // Mapeo de las rutas
 app.use('/', routes);
-app.use('/users', users);
 app.use('/messages', messages);
 app.use('/companies', companies);
 app.use('/tags', tags);
@@ -47,7 +56,6 @@ app.use(function(req, res, next) {
 });
 
 /// error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
