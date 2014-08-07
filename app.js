@@ -9,10 +9,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 // The mongodb driver:
-var mongo = require('mongoskin');
-var db = mongo.db(dbConnectionString, {native_parser:true});
-
-// Schema validating: 
 var mongoose = require('mongoose');
 mongoose.connect(dbConnectionString);
 
@@ -35,12 +31,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Make our db accessible to our router
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
 
 // Mapeo de las rutas
 app.use('/', routes);
